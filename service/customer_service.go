@@ -2,6 +2,8 @@ package service
 
 import (
 	"bank/repository"
+	"database/sql"
+	"errors"
 	"log"
 )
 
@@ -35,7 +37,10 @@ func (c customerService) GetCustomers() ([]CustomerResponse, error) {
 func (c customerService) GetCustomer(id int) (*CustomerResponse, error) {
 	customer, err := c.customerRepo.GetById(id)
 	if err != nil {
-		log.Fatal(err)
+		if err == sql.ErrNoRows {
+			return nil, errors.New("Customer not found.")
+		}
+		log.Println(err)
 		return nil, err
 	}
 
