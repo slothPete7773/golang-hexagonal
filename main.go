@@ -3,6 +3,8 @@ package main
 import (
 	"bank/repository"
 	"bank/service"
+	"fmt"
+	"log"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
@@ -25,49 +27,13 @@ func main() {
 
 	customerService := service.NewCustomerService(customerRepo)
 
-	// testCreate(customerRepo)
-	// testGetAll(customerRepo)
-	// testGetById(customerRepo, 1)
-	// testDelete(customerRepo, 2)
+	customerResponses, err := customerService.GetCustomers()
+	if err != nil {
+		fmt.Println("Error from query operation.")
+		log.Fatal(err)
+	}
+
+	fmt.Println("Successfully queried.")
+	log.Println(customerResponses)
 
 }
-
-// func testCreate(customerRepo repository.CustomerRepository) {
-
-// 	err := customerRepo.Create(&repository.Customer{
-// 		CustomerID: 2,
-// 		Name:       "sloth",
-// 		Status:     1,
-// 	})
-
-// 	fmt.Println(err)
-
-// }
-
-// func testGetAll(customerRepo repository.CustomerRepository) {
-
-// 	customers, err := customerRepo.GetAll()
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	fmt.Println(customers)
-
-// }
-
-// func testGetById(customerRepo repository.CustomerRepository, id int) {
-
-// 	customer, err := customerRepo.GetById(id)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	fmt.Println(*customer)
-
-// }
-
-// func testDelete(customerRepo repository.CustomerRepository, id int) {
-
-// 	err := customerRepo.Delete(id)
-
-// 	fmt.Println(err)
-
-// }
