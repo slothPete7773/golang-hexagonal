@@ -25,10 +25,10 @@ func (c customerRepositoryDB) GetAll() ([]Customer, error) {
 
 	return customers, nil
 }
-func (c customerRepositoryDB) GetById(id int) (*Customer, error) {
+func (c customerRepositoryDB) GetById(customerId int) (*Customer, error) {
 	var customer Customer
 	query := "SELECT * FROM customers WHERE customer_id = ?"
-	err := c.db.Get(&customer, query, id)
+	err := c.db.Get(&customer, query, customerId)
 	if err != nil {
 		return nil, err
 	}

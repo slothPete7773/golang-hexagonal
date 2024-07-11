@@ -14,6 +14,8 @@ func Migrate() {
 	}
 
 	// Migrate the schema
-	db.AutoMigrate(&repository.Customer{})
+	if err := db.AutoMigrate(&repository.Customer{}, &repository.Account{}); err != nil {
+		panic(err)
+	}
 
 }
