@@ -35,7 +35,7 @@ func (c customerRepositoryDB) GetById(id int) (*Customer, error) {
 	return &customer, nil
 }
 func (c customerRepositoryDB) Create(customer *Customer) error {
-	query := "INSERT INTO customers (customer_id, name, status) VALUES (:customer_id, :name, :status)"
+	query := "INSERT INTO customers (name, status) VALUES (:name, :status)"
 	_, err := c.db.NamedExec(query, customer)
 	if err != nil {
 		return err
