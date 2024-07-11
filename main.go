@@ -1,7 +1,7 @@
 package main
 
 import (
-	apihandler "bank/api_handler"
+	"bank/apihandler"
 	"bank/repository"
 	"bank/service"
 	"fmt"
@@ -22,6 +22,8 @@ func main() {
 		panic(err)
 	}
 
+	// Migrate()
+
 	customerRepo, err := repository.NewCustomerRepository(db)
 	if err != nil {
 		panic(nil)
@@ -36,6 +38,10 @@ func main() {
 
 	fmt.Println("Running at localhost:8081")
 	http.ListenAndServe(":8081", router)
+
+	// ==========================================================================================
+	// ==========================================================================================
+
 	// customerResponses, err := customerService.GetCustomers()
 	// if err != nil {
 	// 	fmt.Println("Error from query operation.")
