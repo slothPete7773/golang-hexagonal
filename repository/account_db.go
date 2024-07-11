@@ -18,7 +18,7 @@ func NewAccountRepositoryDB(db *sqlx.DB) AccountRepository {
 func (a accountRepositoryDB) Create(account Account) (*Account, error) {
 	query := "INSERT INTO accounts (customer_id, opening_date, account_type, amount, status) VALUES (:customer_id, :opening_date, :account_type, :amount, :status) RETURNING account_id"
 
-	result, err := a.db.Exec(query, account)
+	result, err := a.db.NamedExec(query, account)
 	if err != nil {
 		return nil, fmt.Errorf("error creating account: %v", err)
 	}

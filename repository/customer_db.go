@@ -10,8 +10,8 @@ type customerRepositoryDB struct {
 // 	return nil
 // }
 
-func NewCustomerRepository(db *sqlx.DB) (CustomerRepository, error) {
-	return customerRepositoryDB{db: db}, nil
+func NewCustomerRepository(db *sqlx.DB) CustomerRepository {
+	return customerRepositoryDB{db: db}
 }
 
 func (c customerRepositoryDB) GetAll() ([]Customer, error) {

@@ -24,17 +24,20 @@ func main() {
 
 	// Migrate()
 
-	customerRepo, err := repository.NewCustomerRepository(db)
-	if err != nil {
-		panic(nil)
-	}
-
+	customerRepo := repository.NewCustomerRepository(db)
 	customerService := service.NewCustomerService(customerRepo)
 	customerHandler := apihandler.NewCustomerHandler(customerService)
 
+	accountRepo := repository.NewAccountRepositoryDB(db)
+	accountService := service.NewAccountService(accountRepo)
+	accountHandler := apihandler.NewAccountHandler(accountService)
+
 	router := mux.NewRouter()
 	router.HandleFunc("/customers", customerHandler.GetCustomers).Methods(http.MethodGet)
-	router.HandleFunc("/customer/{customer_id:[0-9]+}", customerHandler.GetCustomer).Methods(http.MethodGet)
+	router.HandleFunc("/customers/{customer_id:[0-9]+}", customerHandler.GetCustomer).Methods(http.MethodGet)
+
+	router.HandleFunc("/customers/{customer_id:[0-9]+}/accounts", accountHandler.GetAccounts).Methods(http.MethodGet)
+	router.HandleFunc("/customers/{customer_id:[0-9]+}/accounts", accountHandler.NewAccount).Methods(http.MethodPost)
 
 	fmt.Println("Running at localhost:8081")
 	http.ListenAndServe(":8081", router)
