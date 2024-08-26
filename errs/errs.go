@@ -1,5 +1,7 @@
 package errs
 
+import "net/http"
+
 // Business-layer Error
 
 type AppError struct {
@@ -9,4 +11,17 @@ type AppError struct {
 
 func (e AppError) Error() string {
 	return e.Message
+}
+func NewNotFoundError(message string) error {
+	return AppError{
+		Code:    http.StatusNotFound,
+		Message: message,
+	}
+}
+
+func NewUnexpectedError() error {
+	return AppError{
+		Code:    http.StatusInternalServerError,
+		Message: "Internal error.",
+	}
 }

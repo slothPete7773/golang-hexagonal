@@ -1,8 +1,6 @@
 package apihandler
 
 import (
-	"bank/errs"
-	"bank/logs"
 	"bank/service"
 	"encoding/json"
 	"fmt"
@@ -38,24 +36,13 @@ func (h customerHandler) GetCustomer(w http.ResponseWriter, r *http.Request) {
 	path_vars := mux.Vars(r)
 	customerId, err := strconv.Atoi(path_vars["customer_id"])
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		logs.Error(err)
-		// fmt.Fprintln(w, err)
+		handleError(err, w)
 		return
 	}
 
-	// fmt.Println(customerId)
 	customer, err := h.customerService.GetCustomer(customerId)
 	if err != nil {
-
-		appErr, ok := err.(errs.AppError)
-		if ok {
-			w.WriteHeader(appErr.Code)
-			fmt.Fprintln(w, appErr.Message)
-		}
-		// w.WriteHeader(http.StatusInternalServerError)
-		logs.Error(err)
-		// fmt.Fprintln(w, err)
+		handleError(err, w)
 		return
 	}
 

@@ -5,7 +5,6 @@ import (
 	"bank/logs"
 	"bank/repository"
 	"database/sql"
-	"net/http"
 )
 
 type customerService struct {
@@ -22,7 +21,7 @@ func (c customerService) GetCustomers() ([]CustomerResponse, error) {
 	customers, err := c.customerRepo.GetAll()
 	if err != nil {
 		logs.Error(err)
-		return nil, err
+		return nil, errs.NewUnexpectedError()
 	}
 
 	customerResponses := []CustomerResponse{}
@@ -40,16 +39,10 @@ func (c customerService) GetCustomer(id int) (*CustomerResponse, error) {
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// return nil, errors.New("Customer not found.")
-			return nil, errs.AppError{
-				Code:    http.StatusNotFound,
-				Message: "Customer not found.",
-			}
+			return nil, errs.NewNotFoundError("Customer not found.")
 		}
 		logs.Error(err)
-		return nil, errs.AppError{
-			Code:    http.StatusInternalServerError,
-			Message: "Internal server error.",
-		}
+		return nil, errs.NewUnexpectedError()
 	}
 
 	custResponse := CustomerResponse{
