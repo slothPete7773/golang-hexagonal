@@ -2,9 +2,9 @@ package main
 
 import (
 	"bank/apihandler"
+	"bank/logs"
 	"bank/repository"
 	"bank/service"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -39,7 +39,8 @@ func main() {
 	router.HandleFunc("/customers/{customer_id:[0-9]+}/accounts", accountHandler.GetAccounts).Methods(http.MethodGet)
 	router.HandleFunc("/customers/{customer_id:[0-9]+}/accounts", accountHandler.NewAccount).Methods(http.MethodPost)
 
-	fmt.Println("Running at localhost:8081")
+	// fmt.Println("Running at localhost:8081")
+	logs.Info("Server service started at port: " + "8081")
 	http.ListenAndServe(":8081", router)
 
 	// ==========================================================================================
